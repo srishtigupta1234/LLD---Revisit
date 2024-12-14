@@ -1,0 +1,211 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    
+</body>
+</html>
+<script>
+    class Slot{
+        #slot
+        constructor(start,end){
+            this.#slot = [start,end];
+        }
+        get start(){
+            return this.#slot[0]
+        }
+        get end(){
+            return this.#slot[1]
+        }
+    }
+    class Slots{
+        #slots
+        constructor(){
+            this.#slots = [];
+        }
+        get slot(){
+            return this.#slots;
+        }
+        deleteSlot(slot){
+            const index = this.#slots.indexOf(slot);
+            if (index !== -1) {
+                this.#slots.splice(index, 1); // Removes the slot at the specified index
+            } else {
+               console.log(`Slot "${slot}" not found.`);
+            }
+        }
+        addSlot(slot){
+           if(this.isAvailable(slot.start,slot.end)){
+              this.#slots.push(slot)
+                 console.log(`Slot added successfully.`);
+             } else {
+                console.log(`Slot is not available.`);
+            }
+        }
+        isAvailable(start,end){
+            for(let slot of this.#slots){
+                if(start<slot.end && end>slot.start){
+                    return false
+                }
+            }
+            return true;
+        }
+    }
+    class MeetingRoom{
+        #name;
+        #capacity;
+        #slots
+        constructor(n,c,s){
+           this.#name = n;
+           this.#capacity = c;
+           this.#slots = [];
+        }
+        get MeetingRoomName(){
+            return this.#name;
+        }
+        get MeetingRoomCapacity(){
+            return this.#capacity;
+        }
+        get MeetingRoomSlots(){
+            return this.#slots;
+        }
+        MeetingRoomDeleteSlot(slot){
+            const index = this.#slots.indexOf(slot);
+            if (index !== -1) {
+                this.#slots.splice(index, 1); // Removes the slot at the specified index
+                console.log(`Slot removed successfully.`);
+            } else {
+               console.log(`Slot "${slot}" not found.`);
+            }
+        }
+        MeetingRoomAddSlot(slot){
+           if(this.isAvailable(slot.start,slot.end)){
+              this.#slots.push(slot)
+              console.log(`Slot added successfully to meeting room.`);
+            } else {
+            console.log(`Slot is not available.`);
+           }
+        }
+        isAvailable(start,end){
+            for(let slot of this.#slots){
+                if(start<slot.end && end>slot.start){
+                    return false
+                }
+            }
+            return true;
+        }
+    }
+    class Floor{
+        #name;
+        #meetingRooms
+        constructor(n,c,s){
+           this.#name = n;
+           this.#meetingRooms = [];
+        }
+        get FloorName(){
+            return this.#name;
+        }
+        get MeetingRooms(){
+            return this.#meetingRooms;
+        }
+        deleteMeetingRoom(meetingRoomName) {
+            const initialLength = this.#meetingRooms.length;
+
+             this.#meetingRooms = this.#meetingRooms.filter(
+                room => room.MeetingRoomName !== meetingRoomName
+              );
+
+            if (this.#meetingRooms.length === initialLength) {
+                 console.log(`Meeting room "${meetingRoomName}" not found on Floor "${this.name}".`);
+            } else {
+               console.log(`Meeting room "${meetingRoomName}" has been deleted.`);
+            }
+        }
+
+        AddMeetingRoom(meetingRoom) {
+    const roomExists = this.#meetingRooms.some(
+        room => room.MeetingRoomName === meetingRoom.MeetingRoomName
+    );
+
+    if (roomExists) {
+        console.log(`Meeting room "${meetingRoom.MeetingRoomName}" already exists.`);
+    } else {
+        this.#meetingRooms.push(meetingRoom);
+        console.log(`Meeting room "${meetingRoom.MeetingRoomName}" has been added.`);
+    }
+    }
+}
+    class Building{
+        #name;
+        #floors;
+        constructor(n){
+            this.#name = n;
+            this.#floors = [];
+        }
+        get BuildingName(){
+            return this.#name
+        }
+        get BuildingFloors(){
+            return this.#floors
+        }
+        addFloor(floorname){
+           const floorExists = this.#floors.some(room => room.FloorName === floorname.FloorName)
+           if(floorExists){
+            console.log(`Floor "${floorname.FloorName}" already exists.`);
+           }
+           else{
+            this.#floors.push(floorname)
+            console.log(`${floorname.FloorName} has been added successfully`)
+           }
+        }
+        deleteFloor(floorname){
+            const initialLength = this.#floors.length;
+
+           this.#floors = this.#floors.filter(
+              room => room.FloorName !== floorname
+            );
+
+            if (this.#floors.length === initialLength) {
+                console.log(`"${floorname}" not found on Building "${BuildingName}".`);
+           } else {
+           console.log(`"${floorname}" has been deleted.`);
+        }
+
+
+      }
+    }
+   
+       
+
+    let s1 = new Slot(1, 3);
+let s2 = new Slot(3, 5);
+let s3 = new Slot(1, 5);
+
+let slots = new Slots();
+slots.addSlot(s1);
+slots.addSlot(s2);
+console.log(slots.slot);
+
+slots.addSlot(s3); // Overlapping, won't add
+console.log(slots.slot);
+
+let m1 = new MeetingRoom("Santa", 50);
+m1.MeetingRoomAddSlot(s1);
+m1.MeetingRoomAddSlot(s2);
+console.log(m1);
+
+let f1 = new Floor("Rancho");
+f1.AddMeetingRoom(m1);
+
+// Trying to delete by name, not object
+// f1.deleteMeetingRoom("Santa");
+console.log(f1.MeetingRooms);
+let b1 = new Building("Srishti Mention");
+b1.addFloor(f1);
+console.log(b1.BuildingFloors)
+
+</script>
